@@ -33,10 +33,13 @@ if args.system:
     sub_key = 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment'
 with OpenKey(registry_location, sub_key, access=KEY_ALL_ACCESS) as environment_key:
     path_value_list = QueryValueEx(environment_key, 'Path')[0].split(';')
-    if args.action == 'APPEND':
-        path_value_list.append(args.pathname)
-    elif args.action == 'PREPEND':
-        path_value_list = [args.pathname] + path_value_list
-    elif args.action == 'REMOVE':
+    try:
         path_value_list.remove(args.pathname)
+    except Exception:
+        pass
+    finally:
+        if args.action == 'APPEND':
+            path_value_list.append(args.pathname)
+        elif args.action == 'PREPEND':
+            path_value_list = [args.pathname] + path_value_list
     SetValueEx(environment_key, 'Path', 0, REG_SZ, ';'.join(path_value_list))
