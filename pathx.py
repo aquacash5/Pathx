@@ -11,7 +11,7 @@ optional arguments:
 """
 
 from argparse import ArgumentParser, ArgumentTypeError
-from os.path import exists
+from os.path import exists as path_exists
 from winreg import HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, KEY_ALL_ACCESS, REG_SZ
 from winreg import OpenKey, QueryValueEx, SetValueEx
 
@@ -23,7 +23,7 @@ def action(string):
 
 
 def directory(string):
-    if exists(string):
+    if path_exists(string):
         return string
     raise ArgumentTypeError('Invalid Directory')
 
