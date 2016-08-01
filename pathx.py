@@ -1,4 +1,5 @@
 from argparse import ArgumentParser, ArgumentTypeError
+from os.path import exists
 from winreg import HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, KEY_ALL_ACCESS, REG_SZ
 from winreg import OpenKey, QueryValueEx, SetValueEx
 
@@ -8,12 +9,18 @@ def action(string):
         return string
     raise ArgumentTypeError('Invalid Action')
 
+
+def directory(string):
+    if exists(string):
+        return string
+    raise ArgumentTypeError('Invalid Directory')
+
 parser = ArgumentParser(prog='pathx')
 parser.add_argument('action',
                     type=action,
                     help='Action to preform on %%PATH%% (APPEND, PREPEND, REMOVE)')
 parser.add_argument('pathname',
-                    type=str,
+                    type=directory,
                     help='Pathname to add to or remove from %%PATH%%')
 parser.add_argument('-S', '--system',
                     action='store_true',
