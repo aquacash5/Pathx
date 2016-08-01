@@ -1,3 +1,15 @@
+"""
+usage: pathx [-h] [-S] action pathname
+
+positional arguments:
+  action        Action to preform on %PATH% (APPEND, PREPEND, REMOVE)
+  pathname      Pathname to add to or remove from %PATH%
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -S, --system  Preform action on system %PATH% instead of user %PATH%
+"""
+
 from argparse import ArgumentParser, ArgumentTypeError
 from os.path import exists
 from winreg import HKEY_CURRENT_USER, HKEY_LOCAL_MACHINE, KEY_ALL_ACCESS, REG_SZ
@@ -18,13 +30,13 @@ def directory(string):
 parser = ArgumentParser(prog='pathx')
 parser.add_argument('action',
                     type=action,
-                    help='Action to preform on %%PATH%% (APPEND, PREPEND, REMOVE)')
+                    help='action to preform on %%PATH%% (APPEND, PREPEND, REMOVE)')
 parser.add_argument('pathname',
                     type=directory,
-                    help='Pathname to add to or remove from %%PATH%%')
+                    help='pathname to add to or remove from %%PATH%%')
 parser.add_argument('-S', '--system',
                     action='store_true',
-                    help='Preform action on system %%PATH%% instead of user %%PATH%%')
+                    help='preform action on system %%PATH%% instead of user %%PATH%%')
 args = parser.parse_args()
 registry_location = HKEY_CURRENT_USER
 sub_key = 'Environment'
