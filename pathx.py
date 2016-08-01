@@ -8,16 +8,16 @@ def action(string):
         return string
     raise ArgumentTypeError('Invalid Action')
 
-parser = ArgumentParser()
+parser = ArgumentParser(prog='pathx')
 parser.add_argument('action',
                     type=action,
-                    help='Action to preform on %PATH% (APPEND, PREPEND, REMOVE')
+                    help='Action to preform on %%PATH%% (APPEND, PREPEND, REMOVE)')
 parser.add_argument('pathname',
                     type=str,
-                    help='Pathname to add to or remove from %PATH%')
+                    help='Pathname to add to or remove from %%PATH%%')
 parser.add_argument('-S', '--system',
                     action='store_true',
-                    help='Preform action on system %PATH% instead of user %PATH%')
+                    help='Preform action on system %%PATH%% instead of user %%PATH%%')
 args = parser.parse_args()
 registry_location = HKEY_CURRENT_USER
 sub_key = 'Environment'
