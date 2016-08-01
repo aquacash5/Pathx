@@ -44,15 +44,15 @@ if __name__ == '__main__':
     if args.system:
         registry_location = HKEY_LOCAL_MACHINE
         sub_key = 'SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment'
-    with OpenKey(registry_location, sub_key, access=KEY_ALL_ACCESS) as environment_key:
-        path_value_list = QueryValueEx(environment_key, 'Path')[0].split(';')
+    with OpenKey(registry_location, sub_key, access=KEY_ALL_ACCESS) as environment_key:  # open registry location
+        path_value_list = QueryValueEx(environment_key, 'Path')[0].split(';')            # get and split values in current path value
         try:
-            path_value_list.remove(args.pathname)
+            path_value_list.remove(args.pathname)  # removes the pathname from the current path value
         except Exception:
             pass
         finally:
             if args.action == 'APPEND':
-                path_value_list.append(args.pathname)
+                path_value_list.append(args.pathname)  # appends pathname to path
             elif args.action == 'PREPEND':
-                path_value_list = [args.pathname] + path_value_list
-        SetValueEx(environment_key, 'Path', 0, REG_SZ, ';'.join(path_value_list))
+                path_value_list = [args.pathname] + path_value_list  # prepend pathname to path
+        SetValueEx(environment_key, 'Path', 0, REG_SZ, ';'.join(path_value_list))  # write path back to registry
