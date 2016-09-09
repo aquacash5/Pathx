@@ -1,1 +1,0 @@
-pyinstaller -F -c -n pathx --distpath=. --clean pathx.py --noconsole
